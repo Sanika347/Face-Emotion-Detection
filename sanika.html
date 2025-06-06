@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Emotion Detection</title>
+</head>
+<body>
+  <h1>Real-Time Emotion Detection</h1>
+  <video id="video" width="640" height="480" autoplay></video>
+  <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+  <p>Detected Emotion: <span id="emotion-label">None</span></p>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const emotionLabel = document.getElementById('emotion-label');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        video.srcObject = stream;
+      })
+      .catch((err) => {
+        alert('Webcam access denied: ' + err.message);
+      });
+
+    setInterval(() => {
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'frame.jpg');
+
+        fetch('/predict', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            emotionLabel.innerText = 'Error: ' + data.error;
+          } else {
+            emotionLabel.innerText = data.emotion;
+          }
+        })
+        .catch(err => {
+          emotionLabel.innerText = 'Error: ' + err.message;
+        });
+      }, 'image/jpeg');
+    }, 1000);
+  </script>
+</body>
+</html>
