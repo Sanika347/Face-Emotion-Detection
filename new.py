@@ -6,7 +6,7 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import Sequential  # core class
 
-model = load_model('your_model.h5', custom_objects={'Sequential': Sequential})
+
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Face Emotion Detection",
@@ -231,4 +231,5 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("Made with ❤️ by **Sanika Surashe**")
+
 
