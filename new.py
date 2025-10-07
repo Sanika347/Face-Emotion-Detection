@@ -3,7 +3,10 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import model_from_json
 from PIL import Image
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential  # core class
 
+model = load_model('your_model.h5', custom_objects={'Sequential': Sequential})
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Face Emotion Detection",
@@ -31,12 +34,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------- LOAD MODEL ----------------
+
 @st.cache_resource
 def load_emotion_model():
     with open('emotion_model3.json', 'r') as json_file:
         loaded_model_json = json_file.read()
     model = model_from_json(loaded_model_json)
-    model.load_weights("emotion_model3.weights.h5")
+    model.load_weights("emotion_model3.weights.h5",custom_objects={'Sequential': Sequential})
 
     face_cascade = cv2.CascadeClassifier(
         cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
@@ -227,3 +231,4 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("Made with ❤️ by **Sanika Surashe**")
+
