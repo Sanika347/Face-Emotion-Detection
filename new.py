@@ -1,3 +1,7 @@
+import os
+os.environ["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
+os.environ["STREAMLIT_RUNTIME_SCRIPTRUNNER_UTILS_ENFORCE_ENVIRONMENT_VARIABLE"] = "false"
+os.environ["HOME"] = "/tmp"
 import streamlit as st
 import cv2
 import numpy as np
@@ -231,5 +235,6 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("Made with ❤️ by **Sanika Surashe**")
+
 
 
